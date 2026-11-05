@@ -299,6 +299,7 @@ async function resolveEndpoint() {
 
 function Badge() {
   const model = useValue(host.state.model)
+  const focusedSession = useValue(host.state.focusedSessionId)
   const [now, setNow] = useState(() => new Date())
   const [endpoint, setEndpoint] = useState('')
   const models = useOpenRouter()
@@ -316,7 +317,10 @@ function Badge() {
     return () => {
       alive = false
     }
-  }, [model])
+    // Re-run when the focused chat changes too: two conversations can use the
+    // same model slug through different endpoints (opencode-go vs openrouter),
+    // and the endpoint decides which prices apply.
+  }, [model, focusedSession])
 
   const schedule = scheduleFor(model)
   const entry = useMemo(() => entryFor(models, model), [models, model])
