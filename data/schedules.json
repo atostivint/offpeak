@@ -1,0 +1,49 @@
+{
+  "_comment": "Snapshot of provider peak/off-peak windows. Verified 2026-11-01. Re-verify at source before trusting the rates.",
+  "providers": {
+    "deepseek": {
+      "label": "DeepSeek",
+      "timezone": "UTC",
+      "unit": "USD per 1M tokens",
+      "verified": "2026-11-01",
+      "offpeak_multiplier": 0.5,
+      "peak_windows": [
+        {"days": [0, 1, 2, 3, 4], "start": "01:00", "end": "04:00"},
+        {"days": [0, 1, 2, 3, 4], "start": "06:00", "end": "10:00"}
+      ],
+      "notes": [
+        "All hours outside the listed windows are off-peak, including all weekend.",
+        "Chinese public holidays are billed off-peak as well (not modelled here)."
+      ],
+      "source": "https://api-docs.deepseek.com/quick_start/pricing",
+      "models": {
+        "deepseek-v4.1-flash": {
+          "peak": {"input": 0.30, "output": 1.20},
+          "offpeak": {"input": 0.15, "output": 0.60}
+        },
+        "deepseek-v4-pro": {
+          "peak": {"input": 1.32, "output": 3.96},
+          "offpeak": {"input": 0.66, "output": 1.98}
+        }
+      }
+    },
+    "zai-glm": {
+      "label": "Z.ai GLM (Coding Plan)",
+      "timezone": "Asia/Shanghai",
+      "unit": "plan credits",
+      "verified": "2026-11-01",
+      "offpeak_multiplier": 0.5,
+      "peak_label": "points x2",
+      "offpeak_label": "50% of points",
+      "peak_windows": [
+        {"days": [0, 1, 2, 3, 4], "start": "14:00", "end": "18:00"}
+      ],
+      "notes": [
+        "This clock applies to the GLM Coding Plan (points-based quota), not to pay-per-token API billing.",
+        "Off-peak calls consume 50% of the standard points; weekends are off-peak all day."
+      ],
+      "source": "https://docs.z.ai/guides/llm/glm-5.3",
+      "models": {}
+    }
+  }
+}

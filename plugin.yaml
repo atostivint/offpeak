@@ -1,0 +1,17 @@
+name: offpeak
+version: 0.2.0
+description: >-
+  Tells you whether the model you are using is billed at full or discounted
+  rates right now, and when the price changes. Adds an offpeak_status tool and
+  an /offpeak command for the agent, plus a Desktop status-bar badge. Knows the
+  clock-based providers (DeepSeek direct, opencode-go, Z.ai GLM Coding Plan)
+  and reads OpenRouter's live prices, which publish the same windows as
+  pricing.overrides.
+author: atostivint
+license: MIT
+homepage: https://github.com/atostivint/offpeak
+tags: [pricing, deepseek, openrouter, cost, desktop]
+provides_tools:
+  - offpeak_status
+provides_commands:
+  - offpeak
