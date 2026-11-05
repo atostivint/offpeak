@@ -1,5 +1,7 @@
 # offpeak
 
+![offpeak — know what your model costs right now](docs/banner.png)
+
 Know what the model in front of you costs **right now**.
 
 Some providers bill by the clock: the same tokens cost double during peak hours
@@ -19,6 +21,8 @@ DeepSeek V4.1 Flash — opencode-go
 Now: $0.15 in / $0.60 out per 1M tokens (discount)
 At 11:00 (in 2 h 25): $0.30 in / $1.20 out (peak)
 ```
+
+![The badge and its hover text in the Hermes Desktop status bar](docs/screenshot.png)
 
 ## What it knows
 

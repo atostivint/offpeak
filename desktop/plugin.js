@@ -277,6 +277,26 @@ function buildTooltip({ schedule, rate, endpoint, peak, change, now, flat, live,
   return lines.join('\n')
 }
 
+async function resolveEndpoint() {
+  try {
+    const answer = await host.request('config.get', { key: 'provider' })
+    if (answer && answer.provider && answer.provider !== 'unknown') return String(answer.provider)
+    if (answer && typeof answer.model === 'string' && answer.model.includes('/')) {
+      return answer.model.split('/')[0]
+    }
+  } catch (error) {
+    // older gateways, or the RPC is gone: fall through to the full config
+  }
+  try {
+    const full = await host.request('config.get', { key: 'full' })
+    const value = full && full.config && full.config.model && full.config.model.provider
+    if (value) return String(value)
+  } catch (error) {
+    // no provider to report; the tooltip says so
+  }
+  return ''
+}
+
 function Badge() {
   const model = useValue(host.state.model)
   const [now, setNow] = useState(() => new Date())
@@ -290,12 +310,9 @@ function Badge() {
 
   useEffect(() => {
     let alive = true
-    host
-      .request('config.get', { key: 'provider' })
-      .then(result => {
-        if (alive && result && result.provider) setEndpoint(String(result.provider))
-      })
-      .catch(() => {})
+    resolveEndpoint().then(value => {
+      if (alive) setEndpoint(value)
+    })
     return () => {
       alive = false
     }
@@ -324,8 +341,8 @@ function Badge() {
     title: buildTooltip({ schedule, rate, endpoint, peak, change, now, flat, live, entry }),
     children: [
       jsx('span', {
-        className: 'inline-block h-1.5 w-1.5 rounded-full',
-        style: { backgroundColor: discounted ? 'var(--ui-accent)' : 'var(--ui-warning)' }
+        className: `text-[0.75rem] leading-none ${discounted ? 'text-(--ui-accent)' : 'text-(--ui-warning)'}`,
+        children: '\u00a5'
       }),
       jsx('span', {
         className: discounted ? 'text-(--ui-accent)' : 'text-(--ui-warning)',
